@@ -1,0 +1,24 @@
+{
+  "id": "sehplus_color_assist_v2",
+  "name": "SehPlus ColorAssist",
+  "version": 2,
+  "colorSpace": "sRGB",
+  "mix": "identity_to_algorithm_strength",
+  "defaults": {
+    "profile": "red_green_plus",
+    "strength": 0.70,
+    "brightness": 0.0,
+    "autoEnhance": true
+  },
+  "recognitionModes": [
+    {"id": "test_image", "name": "Testbild", "description": "Stärkere Blau-Gelb- und Helligkeitsunterschiede für Zahlen und Punkte.", "defaultStrength": 0.82, "algorithm": "static_opponent_contrast"},
+    {"id": "whiteboard", "name": "Whiteboard", "description": "Helle Flächen bleiben möglichst neutral; Schrift und Linien werden betont.", "defaultStrength": 0.82, "algorithm": "static_opponent_contrast_whiteboard"}
+  ],
+  "profiles": [
+    {"id": "red_green", "name": "Rot-Grün", "description": "Natürliche Rot-Grün-Unterstützung mit zusätzlicher Blau-Gelb-Trennung.", "algorithm": "linear_rgb_opponent_daltonization", "strengthLimit": 0.46},
+    {"id": "red_green_plus", "name": "Rot-Grün+", "description": "Stärkere Rot-Grün-Unterstützung für Testbilder, Whiteboards und Touch-Boards.", "algorithm": "linear_rgb_opponent_daltonization_plus", "strengthLimit": 0.86},
+    {"id": "tritan", "name": "Blau-Gelb", "description": "Blau-Gelb-Unterstützung für Tritanopie.", "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.475, 0.525, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]},
+    {"id": "contrast", "name": "Kontrast", "description": "Mehr Farbtrennung und Kontrast für schwierige Lichtverhältnisse.", "matrix": [1.24, -0.12, -0.12, 0.0, 0.0, -0.08, 1.16, -0.08, 0.0, 0.0, -0.08, -0.08, 1.16, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]},
+    {"id": "neutral", "name": "Neutral", "description": "Originalbild ohne Farbkorrektur.", "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]}
+  ]
+}

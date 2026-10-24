@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e1214">
+  <meta name="description" content="SehPlus ColorAssist – lokale Farbhilfe für Alltag und Schule.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>SehPlus ColorAssist</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <img src="icon.svg" alt="" class="brand-icon">
+        <div>
+          <p class="eyebrow">SEHPLUS</p>
+          <p class="subtitle">Farben sichtbarer machen · lokal verarbeitet</p>
+        </div>
+      </div>
+      <button id="installButton" class="quiet-button" type="button" hidden>INSTALLIEREN</button>
+    </header>
+
+    <main>
+      <section id="cameraPage" class="page" aria-labelledby="cameraTitle">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow accent-text">LOKAL · OFFLINE</p>
+            <h1 id="cameraTitle">Kamera</h1>
+            <p>Live ansehen, Standbild aufnehmen oder ein Bild öffnen.</p>
+          </div>
+          <span class="status-pill">KEIN KONTO</span>
+        </div>
+
+        <div class="action-grid two-columns">
+          <button id="cameraButton" class="primary-button" type="button">KAMERA STARTEN</button>
+          <label class="secondary-button file-button">
+            BILD ÖFFNEN
+            <input id="imageInput" type="file" accept="image/*,video/*" capture="environment" hidden>
+          </label>
+        </div>
+
+        <div class="control-card">
+          <label for="filterSelect">FILTER</label>
+          <select id="filterSelect" aria-label="Farbfilter auswählen">
+            <option value="red_green_plus">Rot-Grün+</option>
+            <option value="red_green">Rot-Grün</option>
+            <option value="tritan">Blau-Gelb</option>
+            <option value="contrast">Kontrast</option>
+            <option value="neutral">Neutral</option>
+          </select>
+          <div class="range-row">
+            <span>Stärke</span>
+            <input id="strengthRange" type="range" min="0" max="100" value="70">
+            <output id="strengthValue">70 %</output>
+          </div>
+        </div>
+
+        <div id="stage" class="stage" aria-label="Lokale SehPlus-Vorschau">
+          <canvas id="viewCanvas"></canvas>
+          <div id="stageEmpty" class="stage-empty">Kamera starten oder ein Bild öffnen</div>
+          <span class="local-badge">LOKAL</span>
+          <div id="pipetteMarker" class="pipette-marker" hidden><span></span></div>
+        </div>
+
+        <p id="statusText" class="status-line" aria-live="polite">Bereit</p>
+        <p class="light-hint">Licht-Hinweis: Schatten, Spiegelungen und warmes Raumlicht können Aufnahme und Farberkennung verändern. Für wichtige Farben gleichmäßig beleuchten.</p>
+
+        <div class="action-grid three-columns">
+          <button id="stillButton" class="secondary-button" type="button" disabled>STANDBILD</button>
+          <button id="pipetteButton" class="secondary-button" type="button" disabled>PIPETTE</button>
+          <button id="normalButton" class="secondary-button" type="button" disabled>NORMALANSICHT</button>
+        </div>
+
+        <details class="fold-card" id="recognitionDetails">
+          <summary>FARBEN VERSCHIEBEN</summary>
+          <div class="fold-content">
+            <label for="recognitionSelect">Lesemodus für Testbilder und Whiteboards</label>
+            <select id="recognitionSelect">
+              <option value="off">Aus – normaler Filter</option>
+              <option value="test_image">Testbild</option>
+              <option value="whiteboard">Whiteboard</option>
+            </select>
+            <p class="small-note">Dieser Modus priorisiert Helligkeits- und Blau-Gelb-Unterschiede. Farben wirken dann absichtlich weniger natürlich.</p>
+          </div>
+        </details>
+
+        <div class="zoom-row">
+          <button id="zoomOut" class="small-button" type="button" disabled>−</button>
+          <span id="zoomValue">Zoom 1×</span>
+          <button id="zoomReset" class="small-button" type="button" disabled>1×</button>
+          <button id="zoomIn" class="small-button" type="button" disabled>+</button>
+        </div>
+
+        <div class="result-card">
+          <div class="result-copy">
+            <p id="pipetteResult">Pipette auswählen, dann über das Bild ziehen.</p>
+            <div class="result-actions">
+              <button id="areaButton" class="text-button" type="button" disabled>MESSFLÄCHE · MITTEL</button>
+              <button id="torchButton" class="text-button" type="button" disabled>TASCHENLAMPE</button>
+            </div>
+          </div>
+          <div id="colorSwatch" class="color-swatch" aria-label="Gemessene Farbe"></div>
+        </div>
+
+        <div class="action-grid two-columns compact-actions">
+          <button id="saveNoteButton" class="secondary-button" type="button" disabled>MESSUNG MERKEN</button>
+          <button id="shareButton" class="secondary-button" type="button" disabled>FARBKARTE TEILEN</button>
+        </div>
+      </section>
+
+      <section id="aboutPage" class="page" hidden aria-labelledby="aboutTitle">
+        <div class="hero-card">
+          <div class="hero-brand">
+            <img src="icon.svg" alt="" class="hero-icon">
+            <div>
+              <p class="eyebrow accent-text">SEHPLUS COLORASSIST</p>
+              <h1 id="aboutTitle">Farben sicherer unterscheiden</h1>
+              <p>Lokal entwickelt für Alltag, Lernen und mehr Selbstständigkeit.</p>
+            </div>
+          </div>
+          <div class="badge-row">
+            <span class="status-pill">OFFLINE</span><span class="status-pill">LOKAL</span><span class="status-pill">KEIN KONTO</span>
+          </div>
+        </div>
+
+        <div class="action-grid two-columns quick-actions">
+          <a id="donationLink" class="primary-button link-button" href="#" target="_blank" rel="noopener">FREIWILLIG UNTERSTÜTZEN</a>
+          <a id="feedbackLink" class="secondary-button link-button" href="#" target="_blank" rel="noopener">VERBESSERUNG SENDEN</a>
+        </div>
+
+        <details class="fold-card" open>
+          <summary>ÜBER SEHPLUS</summary>
+          <div class="fold-content">
+            <p>SehPlus verarbeitet Kamera- und Bilddaten direkt auf deinem Gerät. Die App hilft beim Unterscheiden von Farben, ersetzt aber keine medizinische Untersuchung.</p>
+            <div class="feature-grid">
+              <div class="feature-tile"><strong>FILTER</strong><span>Farben hervorheben</span></div>
+              <div class="feature-tile"><strong>PIPETTE</strong><span>Farbe messen</span></div>
+              <div class="feature-tile"><strong>STANDBILD</strong><span>Genau lesen</span></div>
+            </div>
+          </div>
+        </details>
+        <details class="fold-card">
+          <summary>HILFE &amp; NUTZUNG</summary>
+          <div class="fold-content">
+            <p>Gleichmäßiges Licht, matte Flächen und eine ruhige Hand machen die Farbmessung zuverlässiger. HEX- und RGB-Werte sind genauer als ein ungefähres Farbetikett.</p>
+            <button id="helpButton" class="secondary-button full-button" type="button">KURZE EINWEISUNG</button>
+          </div>
+        </details>
+        <details class="fold-card">
+          <summary>DATENSCHUTZ</summary>
+          <div class="fold-content">
+            <p>Kein Konto, kein automatischer Upload und keine Hintergrundaufzeichnung. Kamera- und Bilddaten verlassen dieses Gerät nicht.</p>
+            <div class="action-grid two-columns">
+              <a class="secondary-button link-button" href="privacy.html">DATENSCHUTZ</a>
+              <a class="secondary-button link-button" href="impressum.html">KONTAKT / IMPRESSUM</a>
+            </div>
+          </div>
+        </details>
+        <details class="fold-card">
+          <summary>ENTWICKLER &amp; VERSION</summary>
+          <div class="fold-content">
+            <span class="version-badge">VERSION 1.6.0</span>
+            <p>Unabhängig entwickelt, um Farberkennung im Alltag einfacher zu machen.</p>
+            <p class="small-note">Keine medizinische Diagnose · SehPlus ColorAssist v2</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="settingsPage" class="page" hidden aria-labelledby="settingsTitle">
+        <div class="page-heading"><div><p class="eyebrow accent-text">PERSÖNLICH</p><h1 id="settingsTitle">Einstellungen</h1><p>Die Auswahl bleibt lokal auf diesem Gerät.</p></div></div>
+        <div class="settings-card">
+          <label class="switch-row"><span><strong>Automatisch verbessern</strong><small>Helligkeit und Kontrast vorsichtig ausgleichen.</small></span><input id="autoEnhance" type="checkbox" checked></label>
+          <label class="switch-row"><span><strong>Haptisches Feedback</strong><small>Kurze Rückmeldung bei wichtigen Aktionen.</small></span><input id="haptics" type="checkbox" checked></label>
+        </div>
+        <div class="settings-card">
+          <h2>Lokale Daten</h2>
+          <p>Farbnamen und Einstellungen bleiben im Browser gespeichert. Bilder werden nicht gespeichert, außer du lädst sie selbst herunter.</p>
+          <button id="clearData" class="secondary-button full-button" type="button">LOKALE NOTIZEN LÖSCHEN</button>
+        </div>
+        <div class="settings-card"><h2>Hinweis</h2><p>Die Web-Version benötigt HTTPS für die Kamera. Taschenlampensteuerung hängt vom Browser und Gerät ab.</p></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <button class="nav-button selected" data-page="cameraPage" type="button">KAMERA</button>
+      <button class="nav-button" data-page="aboutPage" type="button">ÜBER</button>
+      <button class="nav-button" data-page="settingsPage" type="button">EINSTELLUNGEN</button>
+    </nav>
+  </div>
+  <dialog id="welcomeDialog">
+    <div class="dialog-card">
+      <p class="eyebrow accent-text">WILLKOMMEN BEI SEHPLUS</p>
+      <h2>Kurze Einweisung</h2>
+      <p>SehPlus verarbeitet Kamera- und Bilddaten lokal. Gleichmäßiges Licht und matte Flächen machen die Messung zuverlässiger.</p>
+      <p>Die Farbnamen sind Näherungen. Für wichtige Entscheidungen helfen HEX/RGB, Messqualität und ein Vergleich unter dem passenden Licht.</p>
+      <p class="small-note">Wenn dir SehPlus hilft, kannst du die Entwicklung freiwillig unterstützen. Wenn etwas fehlt, freue ich mich über Feedback.</p>
+      <div class="action-grid two-columns">
+        <button id="welcomeLater" class="secondary-button" type="button">SPÄTER</button>
+        <button id="welcomeStart" class="primary-button" type="button">ZUR KAMERA</button>
+      </div>
+    </div>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>

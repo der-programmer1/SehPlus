@@ -1,0 +1,14 @@
+{
+  "name": "SehPlus ColorAssist",
+  "short_name": "SehPlus",
+  "description": "Lokale Farbhilfe für den Alltag.",
+  "lang": "de",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0e1214",
+  "theme_color": "#0e1214",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}
